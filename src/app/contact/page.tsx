@@ -25,9 +25,26 @@ export default function ContactPage() {
     message: ''
   });
 
+  const [submittedWhatsAppUrl, setSubmittedWhatsAppUrl] = useState('');
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const messageLines = [
+      'Hello STARMED General Trading LLC,',
+      '',
+      '*New B2B Business Enquiry:*',
+      `• *Name:* ${formData.name}`,
+      `• *Company:* ${formData.company}`,
+      `• *Email:* ${formData.email}`,
+      `• *Phone:* ${formData.phone}`,
+      `• *Enquiry Type:* ${formData.subject}`,
+      `• *Requirements:* ${formData.message}`,
+    ];
+    const encodedText = encodeURIComponent(messageLines.join('\n'));
+    const waUrl = `https://wa.me/97124420128?text=${encodedText}`;
+    setSubmittedWhatsAppUrl(waUrl);
     setSubmitted(true);
+    window.open(waUrl, '_blank');
   };
 
   return (
@@ -203,20 +220,34 @@ export default function ContactPage() {
           </div>
 
           {submitted ? (
-            <div className="py-10 text-center space-y-3">
+            <div className="py-10 text-center space-y-4">
               <div className="w-16 h-16 mx-auto rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900">Message Dispatched Successfully</h3>
-              <p className="text-xs text-slate-600 max-w-md mx-auto">
-                Thank you for contacting STARMED General Trading LLC. An assigned commercial sales representative will follow up via email and phone shortly.
-              </p>
-              <button
-                onClick={() => setSubmitted(false)}
-                className="mt-4 px-5 py-2.5 rounded-xl bg-slate-100 text-slate-800 text-xs font-bold hover:bg-slate-200 cursor-pointer"
-              >
-                Send Another Message
-              </button>
+              <div className="space-y-1">
+                <h3 className="text-xl font-bold text-slate-900">Enquiry Formatted & Opened in WhatsApp</h3>
+                <p className="text-xs text-slate-600 max-w-md mx-auto">
+                  Your enquiry has been prepared and routed directly to STARMED General Trading LLC WhatsApp (+971 2 442 0128). If WhatsApp didn&apos;t open automatically, click the button below:
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                <a
+                  href={submittedWhatsAppUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs shadow-sm transition-all"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  <span>Open WhatsApp Conversation</span>
+                </a>
+                <button
+                  onClick={() => setSubmitted(false)}
+                  className="px-5 py-3 rounded-xl bg-slate-100 text-slate-800 text-xs font-bold hover:bg-slate-200 cursor-pointer"
+                >
+                  Edit / Send Another Message
+                </button>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4 pt-4">
@@ -301,10 +332,10 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="w-full py-3.5 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-all cursor-pointer flex items-center justify-center gap-2"
+                className="w-full py-3.5 px-6 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-sm shadow-sm transition-all cursor-pointer flex items-center justify-center gap-2"
               >
-                <Send className="w-4 h-4" />
-                <span>Submit Official Inquiry</span>
+                <MessageSquare className="w-5 h-5" />
+                <span>Submit & Send to WhatsApp</span>
               </button>
             </form>
           )}

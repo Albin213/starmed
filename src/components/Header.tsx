@@ -34,6 +34,23 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Prevent background scrolling when mobile drawer is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
+  // Close mobile drawer upon route navigation
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Products', href: '/products' },
@@ -126,7 +143,7 @@ export default function Header() {
 
               {categoryDropdownOpen && (
                 <div className="absolute top-full left-0 pt-1.5 z-50">
-                  <div className="w-[520px] bg-white border border-slate-200 rounded-2xl shadow-xl p-4 animate-fade-in space-y-3">
+                  <div className="w-[520px] bg-white border border-slate-200 rounded-2xl shadow-xl p-4 animate-dropdown space-y-3">
                     <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                       <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
                         <Grid className="w-3.5 h-3.5 text-emerald-600" />
@@ -135,7 +152,7 @@ export default function Header() {
                       <Link
                         href="/products"
                         onClick={() => setCategoryDropdownOpen(false)}
-                        className="text-xs font-bold text-emerald-700 hover:underline"
+                        className="text-xs font-bold text-emerald-700 hover:underline hover:translate-x-0.5 transition-transform"
                       >
                         All Products ({PRODUCTS.length}) &rarr;
                       </Link>
@@ -151,7 +168,7 @@ export default function Header() {
                             className="flex items-center justify-between px-3 py-2 rounded-xl text-xs text-slate-700 hover:text-emerald-700 hover:bg-emerald-50/80 font-medium transition-colors group"
                             onClick={() => setCategoryDropdownOpen(false)}
                           >
-                            <span className="truncate group-hover:font-semibold">{cat.name}</span>
+                            <span className="truncate group-hover:font-semibold group-hover:translate-x-1 transition-transform inline-block duration-200">{cat.name}</span>
                             <span className="text-[10px] text-slate-400 group-hover:text-emerald-600 ml-1.5 shrink-0 font-medium">
                               ({count})
                             </span>
@@ -184,7 +201,7 @@ export default function Header() {
               rel="noreferrer"
               aria-label="Enquire on WhatsApp"
               title="Enquire on WhatsApp"
-              className="inline-flex items-center justify-center gap-2 p-2.5 sm:px-5 sm:py-2.5 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs sm:text-sm shadow-sm hover:shadow transition-all"
+              className="inline-flex items-center justify-center gap-2 p-2.5 sm:px-5 sm:py-2.5 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs sm:text-sm shadow-sm hover:shadow-md active:scale-95 transition-all animate-whatsapp-pulse"
             >
               <MessageSquare className="w-5 h-5 sm:w-4 sm:h-4 shrink-0" />
               <span className="hidden sm:inline">Enquire on WhatsApp</span>
@@ -202,66 +219,140 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-3">
-          <div className="space-y-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-800 hover:bg-emerald-50 hover:text-emerald-700"
-              >
-                {link.name}
-              </Link>
-            ))}
-          </div>
+      {/* Mobile App Drawer (Fixed Slide-over with Smooth Transitions) */}
+      <div 
+        className={`fixed inset-0 z-50 lg:hidden flex transition-all duration-300 ease-in-out ${
+          mobileMenuOpen ? 'pointer-events-auto visible' : 'pointer-events-none invisible delay-300'
+        }`}
+        aria-hidden={!mobileMenuOpen}
+      >
+        {/* Backdrop Overlay */}
+        <div 
+          className={`fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-300 ease-in-out ${
+            mobileMenuOpen ? 'opacity-100' : 'opacity-0'
+          }`}
+          onClick={() => setMobileMenuOpen(false)}
+          aria-hidden="true"
+        />
 
-          <div className="pt-3 border-t border-slate-100">
-            <div className="flex items-center justify-between px-3 mb-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                Product Categories
-              </span>
-              <Link
-                href="/products"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-xs font-bold text-emerald-700"
-              >
-                All Products ({PRODUCTS.length})
+        {/* Slide-over Drawer Panel */}
+        <div 
+          className={`relative ml-auto w-full max-w-sm sm:max-w-md bg-white shadow-2xl flex flex-col h-full z-50 transition-transform duration-300 ease-out transform ${
+            mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          {/* Drawer Header */}
+          <div className="px-5 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between shrink-0">
+              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center">
+                <img
+                  src="/images/logos/starmed-primary.png"
+                  alt="STARMED General Trading LLC"
+                  className="h-8 w-auto object-contain"
+                />
               </Link>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2 -mr-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-200/60 transition-colors cursor-pointer"
+                aria-label="Close menu"
+              >
+                <X className="w-6 h-6" />
+              </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-xs text-slate-700">
-              {CATEGORIES.map((cat) => {
-                const count = PRODUCTS.filter((p) => p.categoryId === cat.id).length;
-                return (
+
+            {/* Scrollable Navigation & Categories */}
+            <div className="flex-1 overflow-y-auto px-5 py-4 space-y-6 overscroll-contain">
+              {/* Main Navigation Links */}
+              <div className="space-y-1">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3">
+                  Navigation
+                </span>
+                {navLinks.map((link) => {
+                  const isActive = pathname === link.href;
+                  return (
+                    <Link
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
+                        isActive
+                          ? 'bg-emerald-50 text-emerald-800 font-bold border border-emerald-100'
+                          : 'text-slate-800 hover:bg-emerald-50 hover:text-emerald-700'
+                      }`}
+                    >
+                      <span>{link.name}</span>
+                      {isActive && <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />}
+                    </Link>
+                  );
+                })}
+              </div>
+
+              {/* Verified Product Categories */}
+              <div className="space-y-2 pt-2 border-t border-slate-100">
+                <div className="flex items-center justify-between px-3">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    Product Categories ({CATEGORIES.length})
+                  </span>
                   <Link
-                    key={cat.id}
-                    href={`/products?category=${cat.id}`}
+                    href="/products"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors"
+                    className="text-xs font-bold text-emerald-700 hover:underline"
                   >
-                    <span className="truncate">{cat.name}</span>
-                    <span className="text-[10px] text-slate-400 font-semibold ml-2">({count})</span>
+                    All ({PRODUCTS.length}) &rarr;
                   </Link>
-                );
-              })}
-            </div>
-          </div>
+                </div>
+                <div className="grid grid-cols-1 gap-1 text-xs text-slate-700">
+                  {CATEGORIES.map((cat) => {
+                    const count = PRODUCTS.filter((p) => p.categoryId === cat.id).length;
+                    return (
+                      <Link
+                        key={cat.id}
+                        href={`/products?category=${cat.id}`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors bg-slate-50/70 border border-slate-100"
+                      >
+                        <span className="truncate">{cat.name}</span>
+                        <span className="text-[10px] text-slate-400 font-semibold ml-2 shrink-0">
+                          ({count})
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
 
-          <div className="pt-3 border-t border-slate-100">
-            <a
-              href={whatsAppGeneralUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#25D366] text-white font-bold text-sm shadow-xs"
-            >
-              <MessageSquare className="w-4 h-4" />
-              <span>Enquire on WhatsApp</span>
-            </a>
+              {/* Direct Company Details */}
+              <div className="pt-3 border-t border-slate-100 text-xs text-slate-500 space-y-1 px-3">
+                <p className="font-semibold text-slate-800">STARMED General Trading LLC</p>
+                <p className="text-[11px]">Mussafah M-16, Abu Dhabi &bull; UAE & GCC</p>
+                <p className="text-[11px] text-emerald-700 font-medium">Sister Co: Dada Drug Store LLC (Dubai)</p>
+              </div>
+            </div>
+
+            {/* Pinned Bottom Actions */}
+            <div className="p-4 border-t border-slate-200 bg-white shrink-0 space-y-2">
+              <a
+                href={whatsAppGeneralUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-sm shadow-xs transition-colors"
+              >
+                <MessageSquare className="w-4 h-4" />
+                <span>Enquire on WhatsApp</span>
+              </a>
+              <div className="flex items-center justify-around text-[11px] text-slate-500 pt-1">
+                <a href={`tel:${COMPANY_INFO.phone}`} className="flex items-center gap-1 hover:text-emerald-700 font-medium">
+                  <Phone className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Call Office</span>
+                </a>
+                <span className="text-slate-300">|</span>
+                <a href={`mailto:${COMPANY_INFO.email}`} className="flex items-center gap-1 hover:text-emerald-700 font-medium">
+                  <Mail className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Email B2B</span>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
-      )}
-    </header>
+      </header>
   );
 }

@@ -6,17 +6,15 @@ import { Product } from '@/data/products';
 import { COMPANY_INFO } from '@/data/company';
 import { useInquiry } from '@/context/InquiryContext';
 import ProductCard from '@/components/ProductCard';
-import { 
-  ShieldCheck, 
-  FileText, 
-  ChevronRight, 
-  Package, 
-  Layers, 
-  CheckCircle2, 
-  Flame, 
-  Snowflake, 
-  MessageSquare, 
-  ExternalLink,
+import {
+  ShieldCheck,
+  ChevronRight,
+  Package,
+  Layers,
+  CheckCircle2,
+  Flame,
+  Snowflake,
+  MessageSquare,
   Phone,
   Info
 } from 'lucide-react';
@@ -36,7 +34,7 @@ export default function ProductDetailView({ product, relatedProducts }: ProductD
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
       {/* Breadcrumb Navigation */}
-      <nav className="flex items-center gap-2 text-xs text-slate-500">
+      <nav className="animate-breadcrumb flex items-center gap-2 text-xs text-slate-500">
         <Link href="/" className="hover:text-slate-900 transition-colors">Home</Link>
         <ChevronRight className="w-3.5 h-3.5" />
         <Link href="/products" className="hover:text-slate-900 transition-colors">Catalogue</Link>
@@ -51,8 +49,8 @@ export default function ProductDetailView({ product, relatedProducts }: ProductD
       {/* Main Product Showcase Card */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
         {/* Left Column: Product Visuals & Verification Slide */}
-        <div className="lg:col-span-6 space-y-4">
-          <div className="relative rounded-3xl bg-white border border-slate-200 p-8 shadow-xs overflow-hidden aspect-[4/3] flex items-center justify-center">
+        <div className="animate-slide-left lg:col-span-6 space-y-4">
+          <div className="relative rounded-3xl bg-white border border-slate-200 p-8 shadow-xs overflow-hidden aspect-[4/3] flex items-center justify-center transition-shadow duration-300 hover:shadow-lg">
             {/* Top Badges */}
             <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
               <span className="px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wide bg-white/95 backdrop-blur text-emerald-800 border border-slate-200 shadow-xs">
@@ -66,42 +64,16 @@ export default function ProductDetailView({ product, relatedProducts }: ProductD
             <img
               src={product.image}
               alt={product.name}
-              className="max-h-full max-w-full object-contain filter drop-shadow-sm"
+              className="max-h-full max-w-full object-contain filter drop-shadow-sm transition-transform duration-500 hover:scale-105"
             />
           </div>
 
-          {/* Authentic Catalogue Slide Verification Banner */}
-          <div className="rounded-2xl bg-white border border-slate-200 p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
-                <FileText className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                  Official Catalogue Slide #{product.cataloguePage}
-                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold">
-                    Source of Truth
-                  </span>
-                </p>
-                <p className="text-[11px] text-slate-500">
-                  Inspect exact unedited packaging proportions and manufacturer tables.
-                </p>
-              </div>
-            </div>
 
-            <button
-              onClick={() => openSlideModal(product.catalogueSlide)}
-              className="px-4 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-emerald-700 font-bold text-xs border border-slate-200 transition-colors inline-flex items-center gap-1.5 shrink-0 cursor-pointer"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span>Verify Slide</span>
-            </button>
-          </div>
         </div>
 
         {/* Right Column: Information, Specs & Actions */}
-        <div className="lg:col-span-6 space-y-6">
-          <div className="space-y-2">
+        <div className="animate-slide-right lg:col-span-6 space-y-6">
+          <div className="animate-fade-up delay-100 space-y-2">
             <div className="flex items-center gap-2 text-xs font-bold text-emerald-700 uppercase tracking-wider">
               <span>{product.categoryName}</span>
               <span>&bull;</span>
@@ -119,11 +91,11 @@ export default function ProductDetailView({ product, relatedProducts }: ProductD
 
           {/* Certifications & Regulatory Flags */}
           {product.certifications && product.certifications.length > 0 && (
-            <div className="flex flex-wrap gap-2 pt-1">
+            <div className="animate-fade-up delay-150 flex flex-wrap gap-2 pt-1">
               {product.certifications.map((cert, idx) => (
                 <span
                   key={idx}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 transition-transform duration-200 hover:scale-105"
                 >
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                   {cert}
@@ -134,7 +106,7 @@ export default function ProductDetailView({ product, relatedProducts }: ProductD
 
           {/* Available Sizes / Variants */}
           {product.sizesVariants && product.sizesVariants.length > 0 && (
-            <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-2 shadow-xs">
+            <div className="animate-fade-up delay-200 p-4 rounded-2xl bg-white border border-slate-200 space-y-2 shadow-xs">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
                 <Layers className="w-3.5 h-3.5 text-emerald-600" />
                 Available Sizes & Variants
@@ -143,7 +115,7 @@ export default function ProductDetailView({ product, relatedProducts }: ProductD
                 {product.sizesVariants.map((v, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800"
+                    className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 transition-all duration-200 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-800"
                   >
                     {v}
                   </span>
@@ -153,7 +125,7 @@ export default function ProductDetailView({ product, relatedProducts }: ProductD
           )}
 
           {/* Verified Technical Packaging Specs Table */}
-          <div className="rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-xs">
+          <div className="animate-fade-up delay-250 rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-xs">
             <div className="px-5 py-3 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
                 <Package className="w-4 h-4 text-emerald-600" />
@@ -164,13 +136,13 @@ export default function ProductDetailView({ product, relatedProducts }: ProductD
 
             <div className="p-4 grid grid-cols-2 gap-3 text-xs">
               {product.packagingSpecs.box && (
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                <div className="animate-scale-in delay-300 p-3 rounded-xl bg-slate-50 border border-slate-100 transition-all duration-200 hover:bg-emerald-50 hover:border-emerald-200">
                   <span className="text-slate-500 text-[11px] block font-medium">Box / Pack Quantity</span>
                   <span className="text-slate-900 font-bold">{product.packagingSpecs.box}</span>
                 </div>
               )}
               {product.packagingSpecs.ctn && (
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                <div className="animate-scale-in delay-350 p-3 rounded-xl bg-slate-50 border border-slate-100 transition-all duration-200 hover:bg-emerald-50 hover:border-emerald-200">
                   <span className="text-slate-500 text-[11px] block font-medium">Carton (CTN) Packing</span>
                   <span className="text-slate-900 font-bold">{product.packagingSpecs.ctn}</span>
                 </div>
@@ -228,8 +200,8 @@ export default function ProductDetailView({ product, relatedProducts }: ProductD
 
           {/* Hot / Cold Therapy Clinical Instructions */}
           {product.hotColdUsage && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-              <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 space-y-1">
+            <div className="animate-fade-up delay-300 grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 space-y-1 transition-transform duration-200 hover:scale-[1.02]">
                 <div className="flex items-center gap-1.5 text-amber-800 font-bold text-xs uppercase tracking-wider">
                   <Flame className="w-4 h-4 text-amber-600" />
                   <span>Hot Usage Instructions</span>
@@ -239,7 +211,7 @@ export default function ProductDetailView({ product, relatedProducts }: ProductD
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-sky-50 border border-sky-200 space-y-1">
+              <div className="p-4 rounded-2xl bg-sky-50 border border-sky-200 space-y-1 transition-transform duration-200 hover:scale-[1.02]">
                 <div className="flex items-center gap-1.5 text-sky-800 font-bold text-xs uppercase tracking-wider">
                   <Snowflake className="w-4 h-4 text-sky-600" />
                   <span>Cold Usage Instructions</span>
@@ -252,13 +224,13 @@ export default function ProductDetailView({ product, relatedProducts }: ProductD
           )}
 
           {/* Key Product Features */}
-          <div className="space-y-2 pt-2">
+          <div className="animate-fade-up delay-350 space-y-2 pt-2">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
               Verified Product Attributes
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
               {product.features.map((feat, i) => (
-                <div key={i} className="flex items-start gap-2 text-slate-700">
+                <div key={i} className="animate-fade-up flex items-start gap-2 text-slate-700 transition-transform duration-200 hover:translate-x-1" style={{ animationDelay: `${400 + i * 50}ms` }}>
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                   <span className="font-medium">{feat}</span>
                 </div>
@@ -267,13 +239,13 @@ export default function ProductDetailView({ product, relatedProducts }: ProductD
           </div>
 
           {/* Direct WhatsApp Action Button */}
-          <div className="pt-4 border-t border-slate-200 space-y-3">
+          <div className="animate-fade-up delay-500 pt-4 border-t border-slate-200 space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <a
                 href={whatsAppUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-sm shadow-sm transition-all"
+                className="animate-whatsapp-pulse flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-sm shadow-sm transition-all duration-200 hover:scale-[1.03] hover:shadow-lg active:scale-95"
               >
                 <MessageSquare className="w-5 h-5" />
                 <span>Enquire on WhatsApp</span>
@@ -281,7 +253,7 @@ export default function ProductDetailView({ product, relatedProducts }: ProductD
 
               <a
                 href={`tel:${COMPANY_INFO.phone}`}
-                className="flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm border border-slate-300 transition-colors shadow-xs"
+                className="flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm border border-slate-300 transition-all duration-200 hover:scale-[1.03] hover:shadow-md active:scale-95 shadow-xs"
               >
                 <Phone className="w-4 h-4 text-emerald-600" />
                 <span>Call {COMPANY_INFO.phone}</span>
@@ -301,7 +273,7 @@ export default function ProductDetailView({ product, relatedProducts }: ProductD
 
       {/* Related Products */}
       {relatedProducts.length > 0 && (
-        <div className="space-y-6 pt-12 border-t border-slate-200">
+        <div className="animate-fade-up delay-200 space-y-6 pt-12 border-t border-slate-200">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-slate-900">
               Related Products from {product.brandName} & {product.categoryName}
@@ -315,8 +287,10 @@ export default function ProductDetailView({ product, relatedProducts }: ProductD
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {relatedProducts.map((rel) => (
-              <ProductCard key={rel.id} product={rel} />
+            {relatedProducts.map((rel, i) => (
+              <div key={rel.id} className="animate-fade-up" style={{ animationDelay: `${250 + i * 80}ms` }}>
+                <ProductCard product={rel} />
+              </div>
             ))}
           </div>
         </div>

@@ -3,10 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { Product } from '@/data/products';
-import { useInquiry } from '@/context/InquiryContext';
 import { 
   Eye, 
-  FileText, 
   MessageSquare, 
   Layers
 } from 'lucide-react';
@@ -16,10 +14,9 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const { openSlideModal } = useInquiry();
 
   const whatsAppUrl = `https://wa.me/97124420128?text=${encodeURIComponent(
-    `Hello STARMED General Trading LLC,\nI would like to enquire about:\n- Product: ${product.name}\n- Brand: ${product.brandName}\n- Category: ${product.categoryName}\n- Catalogue Slide: #${product.cataloguePage}`
+    `Hello STARMED General Trading LLC,\nI would like to enquire about:\n- Product: ${product.name}\n- Brand: ${product.brandName}\n- Category: ${product.categoryName}`
   )}`;
 
   return (
@@ -48,22 +45,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           loading="lazy"
         />
       </Link>
-
-      {/* Inspect Slide Quick Action */}
-      <div className="px-5 -mt-3.5 relative z-10 flex justify-end">
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            openSlideModal(product.catalogueSlide);
-          }}
-          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white hover:bg-slate-50 text-[11px] font-semibold text-slate-700 border border-slate-200 shadow-xs transition-colors cursor-pointer"
-          title="Inspect verified catalogue slide"
-        >
-          <FileText className="w-3.5 h-3.5 text-emerald-600" />
-          <span>Slide #{product.cataloguePage}</span>
-        </button>
-      </div>
 
       {/* Card Content */}
       <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
