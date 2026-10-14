@@ -18,7 +18,7 @@ export const BRANDS: Brand[] = [
     type: 'owned',
     tagline: 'Leading Healthcare & Pharmaceutical Distribution',
     description: 'The parent flagship brand representing specialized pharmaceutical distribution, cold-chain temperature-controlled healthcare supplies, and diabetic care accessories across UAE and GCC.',
-    logo: '/images/logos/starmed-primary.png',
+    logo: '/images/logos/starmed-official.png',
     color: '#10b981',
     badge: 'Owned Brand',
     established: '2020',

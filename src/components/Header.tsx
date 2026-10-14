@@ -100,9 +100,9 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center py-2 shrink-0">
             <img
-              src="/images/logos/starmed-primary.png"
+              src="/images/logos/starmed-official.png"
               alt="STARMED General Trading LLC"
-              className="h-10 sm:h-12 w-auto object-contain"
+              className="h-12 sm:h-14 w-auto object-contain"
             />
           </Link>
 
@@ -245,9 +245,9 @@ export default function Header() {
           <div className="px-5 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between shrink-0">
               <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center">
                 <img
-                  src="/images/logos/starmed-primary.png"
+                  src="/images/logos/starmed-official.png"
                   alt="STARMED General Trading LLC"
-                  className="h-8 w-auto object-contain"
+                  className="h-10 w-auto object-contain"
                 />
               </Link>
               <button

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1620 772" role="img" aria-labelledby="title desc">
+  <title id="title">STARMED</title>
+  <desc id="desc">STARMED logo with its official website address</desc>
+  <rect width="1620" height="772" fill="#ffffff"/>
+  <ellipse cx="810" cy="386" rx="778" ry="355" fill="#ffffff" stroke="#282828" stroke-width="3"/>
+  <path d="M834 58 A742 329 0 0 1 834 714" fill="none" stroke="#91c73e" stroke-width="18"/>
+  <path d="M834 58 A742 329 0 0 0 834 714" fill="none" stroke="#30358f" stroke-width="18"/>
+  <image x="226" y="191" width="1168" height="285" preserveAspectRatio="xMidYMid meet" xlink:href="/images/logos/starmed-primary.png"/>
+  <text x="810" y="565" fill="#30358f" font-family="Arial, Helvetica, sans-serif" font-size="70" font-weight="500" text-anchor="middle">www.starmed.ae</text>
+</svg>

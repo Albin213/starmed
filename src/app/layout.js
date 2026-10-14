@@ -2,6 +2,7 @@ import "./globals.css";
 import { Suspense } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PageLoader from "@/components/PageLoader";
 import CatalogueSlideModal from "@/components/CatalogueSlideModal";
 import { InquiryProvider } from "@/context/InquiryContext";
 
@@ -48,11 +49,12 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-800 selection:bg-emerald-600 selection:text-white" suppressHydrationWarning>
+        <PageLoader />
         <InquiryProvider>
           <Suspense fallback={<div className="h-20 bg-white border-b border-slate-200" />}>
             <Header />
           </Suspense>
-          <main className="flex-1">
+          <main className="site-main flex-1">
             {children}
           </main>
           <Footer />
